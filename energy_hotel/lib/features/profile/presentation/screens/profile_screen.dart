@@ -613,16 +613,16 @@ class ProfileScreen extends ConsumerWidget {
             onTap: () async {
               final confirmed = await showDialog<bool>(
                 context: context,
-                builder: (context) => AlertDialog(
+                builder: (dialogContext) => AlertDialog(
                   title: Text(l10n.logout),
                   content: Text(l10n.logoutConfirm),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(context, false),
+                      onPressed: () => Navigator.pop(dialogContext, false),
                       child: Text(l10n.cancel),
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pop(context, true),
+                      onPressed: () => Navigator.pop(dialogContext, true),
                       child: Text(
                         l10n.logout,
                         style: TextStyle(color: AppColors.error),
@@ -632,7 +632,10 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               );
               if (confirmed == true) {
-                ref.read(authProvider.notifier).logout();
+                await ref.read(authProvider.notifier).logout();
+                if (context.mounted) {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                }
               }
             },
           ),
