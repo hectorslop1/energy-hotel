@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/chip_filter.dart';
@@ -37,7 +38,7 @@ class ExploreScreen extends ConsumerWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: _buildHeader()),
+            SliverToBoxAdapter(child: _buildHeader(context)),
             SliverToBoxAdapter(
               child: _buildCategoryFilters(ref, selectedCategory),
             ),
@@ -47,7 +48,11 @@ class ExploreScreen extends ConsumerWidget {
                 data: (places) => _buildPlacesGrid(places),
                 loading: () => _buildLoadingGrid(),
                 error: (error, stack) => SliverToBoxAdapter(
-                  child: Center(child: Text('Error loading places')),
+                  child: Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.errorLoadingServices,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -57,14 +62,17 @@ class ExploreScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppSpacing.md),
-          const Text('Explore', style: AppTextStyles.displaySmall),
+          Text(
+            AppLocalizations.of(context)!.explore,
+            style: AppTextStyles.displaySmall,
+          ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             'Discover amazing places nearby',

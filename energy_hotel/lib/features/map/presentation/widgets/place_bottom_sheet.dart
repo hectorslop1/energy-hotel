@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -165,7 +166,10 @@ class PlaceBottomSheet extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('From', style: AppTextStyles.labelSmall),
+                        Text(
+                          AppLocalizations.of(context)!.from,
+                          style: AppTextStyles.labelSmall,
+                        ),
                         Text(
                           Formatters.currency(place.price!),
                           style: AppTextStyles.headlineMedium.copyWith(
@@ -178,7 +182,9 @@ class PlaceBottomSheet extends StatelessWidget {
                 Expanded(
                   flex: place.price != null ? 2 : 1,
                   child: PrimaryButton(
-                    text: place.price != null ? 'Book Now' : 'View Details',
+                    text: place.price != null
+                        ? AppLocalizations.of(context)!.bookNow
+                        : AppLocalizations.of(context)!.viewDetails,
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.of(context).push(

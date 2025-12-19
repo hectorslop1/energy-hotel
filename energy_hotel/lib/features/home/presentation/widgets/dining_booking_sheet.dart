@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -25,7 +26,8 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
   String _selectedTime = '7:00 PM';
   int _guestCount = 2;
-  String _specialRequests = '';
+  final TextEditingController _specialRequestsController =
+      TextEditingController();
   bool _isProcessing = false;
 
   final List<Map<String, dynamic>> _restaurants = [
@@ -566,10 +568,13 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Table Reserved!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.tableReserved,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Your dining experience awaits.',
+                AppLocalizations.of(context)!.diningAwaits,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -611,7 +616,7 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -697,7 +702,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Dining', style: AppTextStyles.headlineMedium),
+                    Text(
+                      AppLocalizations.of(context)!.dining,
+                      style: AppTextStyles.headlineMedium,
+                    ),
                     Text(_getStepTitle(), style: AppTextStyles.bodySmall),
                   ],
                 ),
@@ -712,11 +720,11 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
   String _getStepTitle() {
     switch (_currentStep) {
       case 0:
-        return 'Choose a restaurant';
+        return AppLocalizations.of(context)!.chooseRestaurant;
       case 1:
-        return 'Pre-order dishes (optional)';
+        return AppLocalizations.of(context)!.preOrderDishes;
       case 2:
-        return 'Select date & time';
+        return AppLocalizations.of(context)!.selectDateTime;
       default:
         return '';
     }
@@ -1011,7 +1019,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Customize:', style: AppTextStyles.labelSmall),
+                  Text(
+                    AppLocalizations.of(context)!.customize,
+                    style: AppTextStyles.labelSmall,
+                  ),
                   const SizedBox(height: AppSpacing.xs),
                   Wrap(
                     spacing: AppSpacing.xs,
@@ -1062,7 +1073,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Number of Guests', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.guests,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -1099,7 +1113,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('Select Date', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.selectDate,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: 80,
@@ -1164,7 +1181,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('Select Time', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.selectTime,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.sm,
@@ -1199,7 +1219,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
             }).toList(),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('Special Requests', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.specialRequests,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           TextField(
             maxLines: 2,
@@ -1219,7 +1242,7 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
                 borderSide: const BorderSide(color: AppColors.primary),
               ),
             ),
-            onChanged: (value) => _specialRequests = value,
+            controller: _specialRequestsController,
           ),
           if (_selectedDishes.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.lg),
@@ -1240,7 +1263,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Pre-Order Summary', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.preOrderSummary,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           ..._selectedDishes.map((dish) {
             final customizations = _dishCustomizations[dish['id']] ?? [];
@@ -1277,7 +1303,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Estimated Total', style: AppTextStyles.titleMedium),
+              Text(
+                AppLocalizations.of(context)!.estimatedTotal,
+                style: AppTextStyles.titleMedium,
+              ),
               Text(
                 Formatters.currency(_totalPrice),
                 style: AppTextStyles.headlineSmall.copyWith(
@@ -1314,7 +1343,10 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Pre-order', style: AppTextStyles.caption),
+                  Text(
+                    AppLocalizations.of(context)!.preOrder,
+                    style: AppTextStyles.caption,
+                  ),
                   Text(
                     Formatters.currency(_totalPrice),
                     style: AppTextStyles.headlineSmall.copyWith(
@@ -1329,8 +1361,12 @@ class _DiningBookingSheetState extends ConsumerState<DiningBookingSheet> {
             flex: _currentStep == 2 && _selectedDishes.isNotEmpty ? 2 : 1,
             child: PrimaryButton(
               text: _currentStep == 2
-                  ? (_isProcessing ? 'Reserving...' : 'Reserve Table')
-                  : (_currentStep == 1 ? 'Continue' : 'Select Restaurant'),
+                  ? (_isProcessing
+                        ? AppLocalizations.of(context)!.reserving
+                        : AppLocalizations.of(context)!.reserveTable)
+                  : (_currentStep == 1
+                        ? AppLocalizations.of(context)!.continueText
+                        : AppLocalizations.of(context)!.selectRestaurant),
               isLoading: _isProcessing,
               onPressed: canProceed && !_isProcessing
                   ? () {

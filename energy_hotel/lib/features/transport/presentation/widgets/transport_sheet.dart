@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/primary_button.dart';
 
 class TransportSheet extends ConsumerStatefulWidget {
@@ -17,69 +17,62 @@ class TransportSheet extends ConsumerStatefulWidget {
 class _TransportSheetState extends ConsumerState<TransportSheet> {
   int _currentStep = 0;
   String? _selectedService;
-  DateTime _selectedDate = DateTime.now();
   String _selectedTime = 'Now';
-  String _pickupLocation = 'Hotel Lobby';
+  final String _pickupLocation = 'Hotel Lobby';
   String _dropoffLocation = '';
   int _passengers = 1;
   bool _isProcessing = false;
 
-  final List<Map<String, dynamic>> _services = [
-    {
-      'id': 'taxi',
-      'name': 'Taxi',
-      'description': 'Standard taxi service',
-      'icon': Icons.local_taxi,
-      'price': 'Metered',
-      'eta': '5-10 min',
-      'capacity': 4,
-    },
-    {
-      'id': 'private_car',
-      'name': 'Private Car',
-      'description': 'Sedan with professional driver',
-      'icon': Icons.directions_car,
-      'price': '\$45',
-      'eta': '10-15 min',
-      'capacity': 4,
-    },
-    {
-      'id': 'suv',
-      'name': 'SUV',
-      'description': 'Spacious SUV for groups',
-      'icon': Icons.airport_shuttle,
-      'price': '\$65',
-      'eta': '10-15 min',
-      'capacity': 6,
-    },
-    {
-      'id': 'airport',
-      'name': 'Airport Shuttle',
-      'description': 'Direct to/from airport',
-      'icon': Icons.flight,
-      'price': '\$35/person',
-      'eta': 'Scheduled',
-      'capacity': 8,
-    },
-    {
-      'id': 'valet',
-      'name': 'Valet Service',
-      'description': 'Retrieve your parked car',
-      'icon': Icons.car_rental,
-      'price': 'Included',
-      'eta': '5-8 min',
-      'capacity': 0,
-    },
-    {
-      'id': 'rental',
-      'name': 'Car Rental',
-      'description': 'Rent a car for the day',
-      'icon': Icons.key,
-      'price': 'From \$89/day',
-      'eta': '30 min',
-      'capacity': 5,
-    },
-  ];
+  List<Map<String, dynamic>> get _services {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'id': 'taxi',
+        'name': l10n.taxi,
+        'description': l10n.standardTaxiService,
+        'icon': Icons.local_taxi,
+        'price': l10n.metered,
+        'eta': '5-10 min',
+        'capacity': 4,
+      },
+      {
+        'id': 'private_car',
+        'name': l10n.privateCar,
+        'description': l10n.sedanWithDriver,
+        'icon': Icons.directions_car,
+        'price': '\$45',
+        'eta': '10-15 min',
+        'capacity': 4,
+      },
+      {
+        'id': 'suv',
+        'name': 'SUV',
+        'description': l10n.spaciousSuvForGroups,
+        'icon': Icons.airport_shuttle,
+        'price': '\$65',
+        'eta': '10-15 min',
+        'capacity': 6,
+      },
+      {
+        'id': 'airport',
+        'name': l10n.airportShuttle,
+        'description': l10n.directToFromAirport,
+        'icon': Icons.flight,
+        'price': '\$35/person',
+        'eta': l10n.scheduled,
+        'capacity': 8,
+      },
+      {
+        'id': 'valet',
+        'name': l10n.valetService,
+        'description': l10n.retrieveYourParkedCar,
+        'icon': Icons.car_rental,
+        'price': l10n.included,
+        'eta': '5-8 min',
+        'capacity': 0,
+      },
+    ];
+  }
 
   final List<String> _timeSlots = [
     'Now',
@@ -228,7 +221,7 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -308,9 +301,14 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Transportation', style: AppTextStyles.headlineMedium),
                     Text(
-                      _currentStep == 0 ? 'Select a service' : 'Enter details',
+                      AppLocalizations.of(context)!.transport,
+                      style: AppTextStyles.headlineMedium,
+                    ),
+                    Text(
+                      _currentStep == 0
+                          ? AppLocalizations.of(context)!.selectAService
+                          : AppLocalizations.of(context)!.enterDestination,
                       style: AppTextStyles.bodySmall,
                     ),
                   ],
@@ -425,7 +423,10 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (needsDestination) ...[
-            Text('Pickup Location', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.pickupLocation,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Container(
               padding: AppSpacing.cardPadding,
@@ -443,16 +444,22 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
                       style: AppTextStyles.bodyMedium,
                     ),
                   ),
-                  TextButton(onPressed: () {}, child: const Text('Change')),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(AppLocalizations.of(context)!.change),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Destination', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.destination,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             TextField(
               decoration: InputDecoration(
-                hintText: 'Enter destination',
+                hintText: AppLocalizations.of(context)!.enterDestination,
                 prefixIcon: const Icon(Icons.location_on),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
@@ -490,7 +497,10 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
             ),
             const SizedBox(height: AppSpacing.lg),
           ],
-          Text('When', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.time,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Wrap(
             spacing: AppSpacing.sm,
@@ -525,7 +535,10 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
           ),
           if ((service['capacity'] as int) > 0) ...[
             const SizedBox(height: AppSpacing.lg),
-            Text('Passengers', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.guests,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
@@ -582,8 +595,10 @@ class _TransportSheetState extends ConsumerState<TransportSheet> {
       ),
       child: PrimaryButton(
         text: _currentStep == 0
-            ? 'Continue'
-            : (_isProcessing ? 'Requesting...' : 'Request Now'),
+            ? AppLocalizations.of(context)!.continueText
+            : (_isProcessing
+                  ? AppLocalizations.of(context)!.processing
+                  : AppLocalizations.of(context)!.requestNow),
         isLoading: _isProcessing,
         onPressed: _currentStep == 0
             ? (canProceed ? () => setState(() => _currentStep = 1) : null)

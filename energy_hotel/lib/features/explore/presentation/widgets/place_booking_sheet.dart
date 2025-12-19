@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -54,43 +55,43 @@ class _PlaceBookingSheetState extends ConsumerState<PlaceBookingSheet> {
   String get _actionText {
     switch (widget.place.category) {
       case PlaceCategory.restaurants:
-        return 'Reserve Table';
+        return AppLocalizations.of(context)!.reserveTable;
       case PlaceCategory.activities:
-        return 'Book Activity';
+        return AppLocalizations.of(context)!.bookActivity;
       case PlaceCategory.attractions:
-        return 'Get Tickets';
+        return AppLocalizations.of(context)!.getTickets;
       case PlaceCategory.shopping:
-        return 'Claim Deal';
+        return AppLocalizations.of(context)!.claimOffer;
       case PlaceCategory.nightlife:
-        return 'Reserve Spot';
+        return AppLocalizations.of(context)!.reserveSpot;
     }
   }
 
   String get _successTitle {
     switch (widget.place.category) {
       case PlaceCategory.restaurants:
-        return 'Table Reserved!';
+        return AppLocalizations.of(context)!.tableReserved;
       case PlaceCategory.activities:
-        return 'Activity Booked!';
+        return AppLocalizations.of(context)!.bookingConfirmed;
       case PlaceCategory.attractions:
-        return 'Tickets Confirmed!';
+        return AppLocalizations.of(context)!.ticketsBooked;
       case PlaceCategory.shopping:
-        return 'Deal Claimed!';
+        return AppLocalizations.of(context)!.dealClaimed;
       case PlaceCategory.nightlife:
-        return 'Reservation Confirmed!';
+        return AppLocalizations.of(context)!.spotReserved;
     }
   }
 
   String _getCategoryName(PlaceCategory category) {
     switch (category) {
       case PlaceCategory.restaurants:
-        return 'Restaurant';
+        return AppLocalizations.of(context)!.restaurant;
       case PlaceCategory.activities:
-        return 'Activity';
+        return AppLocalizations.of(context)!.activities;
       case PlaceCategory.attractions:
-        return 'Attraction';
+        return AppLocalizations.of(context)!.sights;
       case PlaceCategory.shopping:
-        return 'Shopping';
+        return AppLocalizations.of(context)!.shopping;
       case PlaceCategory.nightlife:
         return 'Nightlife';
     }
@@ -217,7 +218,9 @@ class _PlaceBookingSheetState extends ConsumerState<PlaceBookingSheet> {
           ],
 
           PrimaryButton(
-            text: _isProcessing ? 'Processing...' : 'Confirm $_actionText',
+            text: _isProcessing
+                ? AppLocalizations.of(context)!.processing
+                : '${AppLocalizations.of(context)!.confirm} $_actionText',
             isLoading: _isProcessing,
             onPressed: _isProcessing ? null : _processBooking,
           ),
@@ -231,7 +234,10 @@ class _PlaceBookingSheetState extends ConsumerState<PlaceBookingSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Select Date', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.selectDate,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         GestureDetector(
           onTap: () async {
@@ -286,7 +292,10 @@ class _PlaceBookingSheetState extends ConsumerState<PlaceBookingSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Select Time', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.selectTime,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Wrap(
           spacing: AppSpacing.sm,
@@ -490,7 +499,7 @@ class _SuccessDialog extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: PrimaryButton(
-                text: 'Done',
+                text: AppLocalizations.of(context)!.done,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

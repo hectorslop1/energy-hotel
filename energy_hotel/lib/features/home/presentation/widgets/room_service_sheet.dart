@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -21,35 +22,39 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
   String _selectedMealTime = 'anytime';
   final Map<String, int> _cartItems = {};
   final Map<String, List<String>> _itemCustomizations = {};
-  String _deliveryInstructions = '';
+  final TextEditingController _deliveryInstructionsController =
+      TextEditingController();
   bool _isProcessing = false;
 
-  final List<Map<String, dynamic>> _mealTimes = [
-    {
-      'id': 'breakfast',
-      'name': 'Breakfast',
-      'icon': Icons.free_breakfast,
-      'hours': '6:00 AM - 11:00 AM',
-    },
-    {
-      'id': 'lunch',
-      'name': 'Lunch',
-      'icon': Icons.lunch_dining,
-      'hours': '11:00 AM - 4:00 PM',
-    },
-    {
-      'id': 'dinner',
-      'name': 'Dinner',
-      'icon': Icons.dinner_dining,
-      'hours': '5:00 PM - 11:00 PM',
-    },
-    {
-      'id': 'anytime',
-      'name': 'All Day Menu',
-      'icon': Icons.schedule,
-      'hours': '24 hours',
-    },
-  ];
+  List<Map<String, dynamic>> get _mealTimes {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'id': 'breakfast',
+        'name': l10n.breakfast,
+        'icon': Icons.free_breakfast,
+        'hours': '6:00 AM - 11:00 AM',
+      },
+      {
+        'id': 'lunch',
+        'name': l10n.lunch,
+        'icon': Icons.lunch_dining,
+        'hours': '11:00 AM - 4:00 PM',
+      },
+      {
+        'id': 'dinner',
+        'name': l10n.dinner,
+        'icon': Icons.dinner_dining,
+        'hours': '5:00 PM - 11:00 PM',
+      },
+      {
+        'id': 'anytime',
+        'name': l10n.all,
+        'icon': Icons.schedule,
+        'hours': '24 hours',
+      },
+    ];
+  }
 
   List<Map<String, dynamic>> get _menu {
     switch (_selectedMealTime) {
@@ -642,10 +647,13 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Order Placed!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.orderConfirmed,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Your order is being prepared.',
+                AppLocalizations.of(context)!.preparingOrder,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -675,7 +683,7 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -761,11 +769,14 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Room Service', style: AppTextStyles.headlineMedium),
+                    Text(
+                      AppLocalizations.of(context)!.roomService,
+                      style: AppTextStyles.headlineMedium,
+                    ),
                     Text(
                       _currentStep == 0
-                          ? 'Order food to your room'
-                          : 'Review your order',
+                          ? AppLocalizations.of(context)!.orderFoodToYourRoom
+                          : AppLocalizations.of(context)!.reviewOrder,
                       style: AppTextStyles.bodySmall,
                     ),
                   ],
@@ -992,7 +1003,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Customize:', style: AppTextStyles.labelSmall),
+                  Text(
+                    AppLocalizations.of(context)!.customize,
+                    style: AppTextStyles.labelSmall,
+                  ),
                   const SizedBox(height: AppSpacing.xs),
                   Wrap(
                     spacing: AppSpacing.xs,
@@ -1043,7 +1057,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Your Order', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.orderSummary,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           ..._cartItems.entries.map((entry) {
             final item = _findItemById(entry.key);
@@ -1104,7 +1121,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
             );
           }),
           const SizedBox(height: AppSpacing.lg),
-          Text('Delivery Instructions', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.deliveryInstructions,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           TextField(
             maxLines: 2,
@@ -1124,7 +1144,7 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 borderSide: const BorderSide(color: AppColors.primary),
               ),
             ),
-            onChanged: (value) => _deliveryInstructions = value,
+            controller: _deliveryInstructionsController,
           ),
           const SizedBox(height: AppSpacing.lg),
           Container(
@@ -1138,7 +1158,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Subtotal', style: AppTextStyles.bodyMedium),
+                    Text(
+                      AppLocalizations.of(context)!.subtotal,
+                      style: AppTextStyles.bodyMedium,
+                    ),
                     Text(
                       Formatters.currency(_subtotal),
                       style: AppTextStyles.bodyMedium,
@@ -1149,7 +1172,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Delivery Fee', style: AppTextStyles.bodyMedium),
+                    Text(
+                      AppLocalizations.of(context)!.deliveryFee,
+                      style: AppTextStyles.bodyMedium,
+                    ),
                     Text(
                       _deliveryFee == 0
                           ? 'FREE'
@@ -1174,7 +1200,10 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Total', style: AppTextStyles.titleMedium),
+                    Text(
+                      AppLocalizations.of(context)!.total,
+                      style: AppTextStyles.titleMedium,
+                    ),
                     Text(
                       Formatters.currency(_total),
                       style: AppTextStyles.headlineSmall.copyWith(
@@ -1230,8 +1259,12 @@ class _RoomServiceSheetState extends ConsumerState<RoomServiceSheet> {
             flex: _cartItems.isNotEmpty ? 2 : 1,
             child: PrimaryButton(
               text: _currentStep == 0
-                  ? (_cartItems.isEmpty ? 'Add items to order' : 'View Cart')
-                  : (_isProcessing ? 'Placing Order...' : 'Place Order'),
+                  ? (_cartItems.isEmpty
+                        ? AppLocalizations.of(context)!.addItemsToOrder
+                        : AppLocalizations.of(context)!.viewCart)
+                  : (_isProcessing
+                        ? AppLocalizations.of(context)!.placingOrder
+                        : AppLocalizations.of(context)!.placeOrder),
               isLoading: _isProcessing,
               onPressed: _cartItems.isEmpty
                   ? null

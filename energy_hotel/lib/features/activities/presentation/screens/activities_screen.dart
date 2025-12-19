@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -22,13 +23,10 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
   late TabController _tabController;
   int _selectedCategory = 0;
 
-  final List<String> _categories = [
-    'All',
-    'Events',
-    'Tours',
-    'Classes',
-    'Sports',
-  ];
+  List<String> get _categories {
+    final l10n = AppLocalizations.of(context)!;
+    return [l10n.all, l10n.events, l10n.tours, l10n.classes, l10n.sports];
+  }
 
   final List<Map<String, dynamic>> _activities = [
     {
@@ -214,7 +212,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
             backgroundColor: AppColors.primary,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                'Activities & Events',
+                AppLocalizations.of(context)!.activities,
                 style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
               ),
               background: Stack(
@@ -558,7 +556,10 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('You\'re Booked!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.bookingConfirmed,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Get ready for ${widget.activity['name']}!',
@@ -571,7 +572,7 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -679,12 +680,12 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
                   ),
                   _buildInfoRow(
                     Icons.timer,
-                    'Duration',
+                    AppLocalizations.of(context)!.duration,
                     activity['duration'] as String,
                   ),
                   _buildInfoRow(
                     Icons.location_on,
-                    'Location',
+                    AppLocalizations.of(context)!.location,
                     activity['location'] as String,
                   ),
                   _buildInfoRow(
@@ -693,7 +694,10 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
                     '$spotsLeft spots left',
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  Text('Number of Guests', style: AppTextStyles.titleMedium),
+                  Text(
+                    AppLocalizations.of(context)!.guests,
+                    style: AppTextStyles.titleMedium,
+                  ),
                   const SizedBox(height: AppSpacing.sm),
                   Row(
                     children: [
@@ -742,7 +746,10 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Total', style: AppTextStyles.caption),
+                        Text(
+                          AppLocalizations.of(context)!.total,
+                          style: AppTextStyles.caption,
+                        ),
                         Text(
                           _totalPrice == 0
                               ? 'FREE'
@@ -759,7 +766,9 @@ class _ActivityDetailSheetState extends ConsumerState<_ActivityDetailSheet> {
                   Expanded(
                     flex: 2,
                     child: PrimaryButton(
-                      text: _isProcessing ? 'Booking...' : 'Book Now',
+                      text: _isProcessing
+                          ? AppLocalizations.of(context)!.processing
+                          : AppLocalizations.of(context)!.bookNow,
                       isLoading: _isProcessing,
                       onPressed: _isProcessing ? null : _bookActivity,
                     ),

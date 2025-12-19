@@ -2,11 +2,13 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/validators.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
+import '../providers/biometric_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -21,6 +23,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _biometricEnabled = false;
 
   late AnimationController _fadeController;
   late AnimationController _slideController;
@@ -67,6 +70,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
     _fadeController.forward();
     _slideController.forward();
+    _checkBiometricStatus();
+  }
+
+  Future<void> _checkBiometricStatus() async {
+    await ref.read(biometricEnabledProvider.notifier).refresh();
+    final biometricState = ref.read(biometricEnabledProvider);
+    final hasCredentials = await ref
+        .read(biometricEnabledProvider.notifier)
+        .hasStoredCredentials();
+    if (mounted) {
+      setState(() {
+        _biometricEnabled =
+            biometricState.isEnabled &&
+            biometricState.isAvailable &&
+            hasCredentials;
+      });
+    }
   }
 
   @override
@@ -212,50 +232,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         ScaleTransition(
           scale: _logoScaleAnimation,
           child: Container(
-            width: 100,
-            height: 100,
+            width: 140,
+            height: 160,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [AppColors.primary, AppColors.primaryLight],
-              ),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.4),
+                  color: AppColors.primary.withValues(alpha: 0.3),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
               ],
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // Glow effect
-                AnimatedBuilder(
-                  animation: _pulseController,
-                  builder: (context, child) {
-                    return Container(
-                      width: 60 + (_pulseController.value * 10),
-                      height: 60 + (_pulseController.value * 10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withValues(
-                          alpha: 0.1 + (_pulseController.value * 0.1),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                const Icon(Icons.hotel_rounded, color: Colors.white, size: 48),
-              ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset('assets/images/Logo.png', fit: BoxFit.fill),
             ),
           ),
         ),
         const SizedBox(height: 32),
         Text(
-          'Welcome to',
+          AppLocalizations.of(context)?.welcomeTo ?? 'Welcome to',
           style: AppTextStyles.headlineSmall.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w400,
@@ -299,7 +296,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Sign In',
+              AppLocalizations.of(context)?.signIn ?? 'Sign In',
               style: AppTextStyles.headlineMedium.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -307,7 +304,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             ),
             const SizedBox(height: 8),
             Text(
-              'Enter your credentials to continue',
+              AppLocalizations.of(context)?.enterCredentials ??
+                  'Enter your credentials to continue',
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -316,7 +314,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             const SizedBox(height: 24),
             _buildTextField(
               controller: _emailController,
-              hint: 'Email Address',
+              hint:
+                  AppLocalizations.of(context)?.emailAddress ?? 'Email Address',
               icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
               enabled: !isLoading,
@@ -325,7 +324,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             const SizedBox(height: 16),
             _buildTextField(
               controller: _passwordController,
-              hint: 'Password',
+              hint: AppLocalizations.of(context)?.password ?? 'Password',
               icon: Icons.lock_outline,
               obscureText: _obscurePassword,
               enabled: !isLoading,
@@ -345,6 +344,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             ),
             const SizedBox(height: 24),
             _buildLoginButton(isLoading),
+            if (_biometricEnabled) ...[
+              const SizedBox(height: 16),
+              _buildBiometricLoginButton(isLoading),
+            ],
           ],
         ),
       ),
@@ -432,7 +435,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Sign In',
+                        AppLocalizations.of(context)?.signIn ?? 'Sign In',
                         style: AppTextStyles.titleMedium.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -450,6 +453,78 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         ),
       ),
     );
+  }
+
+  Widget _buildBiometricLoginButton(bool isLoading) {
+    final biometricState = ref.watch(biometricEnabledProvider);
+    final isFaceId = biometricState.isFaceId;
+    final l10n = AppLocalizations.of(context);
+
+    final buttonText = isFaceId
+        ? (l10n?.loginWithFaceId ?? 'Log In with Face ID')
+        : (l10n?.loginWithFingerprint ?? 'Log In with Fingerprint');
+    final iconData = isFaceId ? Icons.face : Icons.fingerprint;
+
+    return Container(
+      height: 56,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary, width: 2),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: isLoading ? null : _handleBiometricLogin,
+          borderRadius: BorderRadius.circular(16),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(iconData, color: AppColors.primary, size: 24),
+                const SizedBox(width: 12),
+                Text(
+                  buttonText,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleBiometricLogin() async {
+    final l10n = AppLocalizations.of(context);
+    final credentials = await ref
+        .read(biometricEnabledProvider.notifier)
+        .authenticateAndGetCredentials(
+          localizedReason: l10n?.biometricPrompt ?? 'Authenticate to continue',
+        );
+
+    if (credentials != null && mounted) {
+      final success = await ref
+          .read(authProvider.notifier)
+          .login(credentials['email']!, credentials['password']!);
+      if (!success && mounted) {
+        _showErrorSnackBar();
+      }
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n?.biometricFailed ?? 'Authentication failed'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
+          ),
+        ),
+      );
+    }
   }
 }
 

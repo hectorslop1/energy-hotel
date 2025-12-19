@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -109,7 +110,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Billing & Wallet'),
+        title: Text(AppLocalizations.of(context)!.billingWallet),
         backgroundColor: AppColors.background,
         elevation: 0,
       ),
@@ -153,7 +154,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Current Balance',
+                AppLocalizations.of(context)!.currentBalance,
                 style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
               ),
               Container(
@@ -203,7 +204,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
                   ),
                 ),
                 icon: const Icon(Icons.payment, size: 18),
-                label: const Text('Pay Now'),
+                label: Text(AppLocalizations.of(context)!.payNow),
               ),
             ],
           ),
@@ -221,7 +222,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Top Charges',
+          AppLocalizations.of(context)!.topCharges,
           style: AppTextStyles.caption.copyWith(color: Colors.white70),
         ),
         const SizedBox(height: 4),
@@ -289,7 +290,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
                   borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
                 ),
                 child: Text(
-                  'Charges',
+                  AppLocalizations.of(context)!.charges,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: _selectedTab == 0
                         ? Colors.white
@@ -312,7 +313,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
                   borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
                 ),
                 child: Text(
-                  'Payment Methods',
+                  AppLocalizations.of(context)!.paymentMethods,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: _selectedTab == 1
                         ? Colors.white
@@ -367,8 +368,8 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
     final yesterday = today.subtract(const Duration(days: 1));
     final chargeDate = DateTime(date.year, date.month, date.day);
 
-    if (chargeDate == today) return 'Today';
-    if (chargeDate == yesterday) return 'Yesterday';
+    if (chargeDate == today) return AppLocalizations.of(context)!.today;
+    if (chargeDate == yesterday) return AppLocalizations.of(context)!.yesterday;
     return Formatters.date(date, format: 'EEEE, MMM dd');
   }
 
@@ -438,7 +439,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
             ),
           ),
           icon: const Icon(Icons.add),
-          label: const Text('Add Payment Method'),
+          label: Text(AppLocalizations.of(context)!.addPaymentMethod),
         ),
       ],
     );
@@ -505,7 +506,7 @@ class _BillingScreenState extends ConsumerState<BillingScreen> {
                 borderRadius: BorderRadius.circular(AppSpacing.borderRadiusXl),
               ),
               child: Text(
-                'Default',
+                AppLocalizations.of(context)!.defaultCard,
                 style: AppTextStyles.labelSmall.copyWith(
                   color: AppColors.primary,
                 ),
@@ -597,7 +598,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Payment Successful!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.paymentSuccessful,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Your payment of ${Formatters.currency(_grandTotal)} has been processed.',
@@ -610,7 +614,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -647,7 +651,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Pay Your Bill', style: AppTextStyles.headlineMedium),
+            Text(
+              AppLocalizations.of(context)!.payYourBill,
+              style: AppTextStyles.headlineMedium,
+            ),
             const SizedBox(height: AppSpacing.lg),
             Container(
               padding: AppSpacing.cardPadding,
@@ -660,7 +667,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Subtotal', style: AppTextStyles.bodyMedium),
+                      Text(
+                        AppLocalizations.of(context)!.subtotal,
+                        style: AppTextStyles.bodyMedium,
+                      ),
                       Text(
                         Formatters.currency(widget.totalAmount),
                         style: AppTextStyles.bodyMedium,
@@ -671,7 +681,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Tip', style: AppTextStyles.bodyMedium),
+                      Text(
+                        AppLocalizations.of(context)!.tip,
+                        style: AppTextStyles.bodyMedium,
+                      ),
                       Text(
                         Formatters.currency(_tipAmount),
                         style: AppTextStyles.bodyMedium,
@@ -682,7 +695,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Total', style: AppTextStyles.titleMedium),
+                      Text(
+                        AppLocalizations.of(context)!.total,
+                        style: AppTextStyles.titleMedium,
+                      ),
                       Text(
                         Formatters.currency(_grandTotal),
                         style: AppTextStyles.headlineSmall.copyWith(
@@ -695,7 +711,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Add a Tip', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.addTip,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [0, 10, 15, 20].map((tip) {
@@ -725,7 +744,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                         ),
                       ),
                       child: Text(
-                        tip == 0 ? 'None' : '$tip%',
+                        tip == 0 ? AppLocalizations.of(context)!.none : '$tip%',
                         style: AppTextStyles.labelMedium.copyWith(
                           color: isSelected
                               ? Colors.white
@@ -739,7 +758,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               }).toList(),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Payment Method', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.paymentMethod,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             ...widget.paymentMethods.map((method) {
               final isSelected = _selectedMethod == method['id'];

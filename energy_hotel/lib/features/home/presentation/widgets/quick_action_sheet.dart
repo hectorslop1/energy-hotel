@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -177,7 +178,10 @@ class _QuickActionSheetState extends State<QuickActionSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Request Confirmed!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.requestSubmitted,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Your request has been received.',
@@ -218,7 +222,7 @@ class _QuickActionSheetState extends State<QuickActionSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -414,7 +418,9 @@ class _QuickActionSheetState extends State<QuickActionSheet> {
         ],
       ),
       child: PrimaryButton(
-        text: _isProcessing ? 'Processing...' : 'Request Service',
+        text: _isProcessing
+            ? AppLocalizations.of(context)!.processing
+            : AppLocalizations.of(context)!.requestService,
         isLoading: _isProcessing,
         onPressed: _selectedOption == null || _isProcessing
             ? null

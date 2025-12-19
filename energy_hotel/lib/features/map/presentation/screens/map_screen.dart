@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/chip_filter.dart';
@@ -194,12 +195,13 @@ class _MapScreenState extends ConsumerState<MapScreen>
   }
 
   Widget _buildCategoryFilters(PlaceCategory? selectedCategory) {
+    final l10n = AppLocalizations.of(context)!;
     final categories = [
-      (null, 'All', Icons.apps),
-      (PlaceCategory.restaurants, 'Food', Icons.restaurant),
-      (PlaceCategory.activities, 'Activities', Icons.directions_run),
-      (PlaceCategory.attractions, 'Sights', Icons.photo_camera),
-      (PlaceCategory.shopping, 'Shopping', Icons.shopping_bag),
+      (null, l10n.all, Icons.apps),
+      (PlaceCategory.restaurants, l10n.food, Icons.restaurant),
+      (PlaceCategory.activities, l10n.activities, Icons.directions_run),
+      (PlaceCategory.attractions, l10n.sights, Icons.photo_camera),
+      (PlaceCategory.shopping, l10n.shopping, Icons.shopping_bag),
     ];
 
     return SizedBox(

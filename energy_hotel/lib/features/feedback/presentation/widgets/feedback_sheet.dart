@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -17,7 +18,7 @@ class FeedbackSheet extends StatefulWidget {
 class _FeedbackSheetState extends State<FeedbackSheet> {
   int _overallRating = 0;
   final Map<String, int> _categoryRatings = {};
-  String _feedback = '';
+  final TextEditingController _feedbackController = TextEditingController();
   bool _isProcessing = false;
 
   List<String> get _categories {
@@ -71,7 +72,10 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Thank You!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.thankYou,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Your feedback helps us improve our services.',
@@ -110,7 +114,7 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -208,7 +212,10 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
   Widget _buildOverallRating() {
     return Column(
       children: [
-        Text('Overall Rating', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.overallRating,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.md),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -263,7 +270,10 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Rate by Category', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.rateByCategory,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.md),
         ..._categories.map((category) {
           final rating = _categoryRatings[category] ?? 0;
@@ -307,12 +317,15 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Additional Comments', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.additionalComments,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         TextField(
           maxLines: 4,
           decoration: InputDecoration(
-            hintText: 'Tell us more about your experience...',
+            hintText: AppLocalizations.of(context)!.leaveComment,
             hintStyle: AppTextStyles.bodySmall,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
@@ -327,7 +340,7 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
               borderSide: const BorderSide(color: AppColors.primary),
             ),
           ),
-          onChanged: (value) => _feedback = value,
+          controller: _feedbackController,
         ),
       ],
     );
@@ -347,7 +360,9 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
         ],
       ),
       child: PrimaryButton(
-        text: _isProcessing ? 'Submitting...' : 'Submit Feedback',
+        text: _isProcessing
+            ? AppLocalizations.of(context)!.submitting
+            : AppLocalizations.of(context)!.submitFeedback,
         isLoading: _isProcessing,
         onPressed: _overallRating > 0 && !_isProcessing
             ? _submitFeedback

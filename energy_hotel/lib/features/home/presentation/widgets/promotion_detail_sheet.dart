@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -56,7 +57,10 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Offer Claimed!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.success,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'The discount has been applied to your account.',
@@ -99,7 +103,7 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
                             style: AppTextStyles.titleSmall,
                           ),
                           Text(
-                            'Valid until ${Formatters.date(widget.promotion.validUntil)}',
+                            '${AppLocalizations.of(context)!.validUntil} ${Formatters.date(widget.promotion.validUntil)}',
                             style: AppTextStyles.caption,
                           ),
                         ],
@@ -112,7 +116,7 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -232,7 +236,10 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('About this offer', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.about,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             widget.promotion.description,
@@ -245,7 +252,9 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
           _buildTermsSection(),
           const SizedBox(height: AppSpacing.lg),
           PrimaryButton(
-            text: _isProcessing ? 'Processing...' : 'Claim Offer',
+            text: _isProcessing
+                ? AppLocalizations.of(context)!.processing
+                : AppLocalizations.of(context)!.claimOffer,
             icon: Icons.local_offer_outlined,
             isLoading: _isProcessing,
             onPressed: _isProcessing ? null : _claimOffer,
@@ -266,12 +275,15 @@ class _PromotionDetailSheetState extends State<PromotionDetailSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Terms & Conditions', style: AppTextStyles.titleSmall),
+          Text(
+            AppLocalizations.of(context)!.termsAndConditions,
+            style: AppTextStyles.titleSmall,
+          ),
           const SizedBox(height: AppSpacing.sm),
-          _buildTermItem('Valid for hotel guests only'),
-          _buildTermItem('Cannot be combined with other offers'),
-          _buildTermItem('Subject to availability'),
-          _buildTermItem('Non-transferable'),
+          _buildTermItem(AppLocalizations.of(context)!.validForHotelGuestsOnly),
+          _buildTermItem(AppLocalizations.of(context)!.cannotBeCombined),
+          _buildTermItem(AppLocalizations.of(context)!.subjectToAvailability),
+          _buildTermItem(AppLocalizations.of(context)!.nonTransferable),
         ],
       ),
     );

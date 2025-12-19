@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -18,37 +19,40 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
   final int _pointsToNextTier = 2250;
   final int _nightsThisYear = 12;
 
-  final List<Map<String, dynamic>> _tiers = [
-    {
-      'name': 'Silver',
-      'minPoints': 0,
-      'color': Colors.grey,
-      'benefits': ['5% off dining', 'Late checkout (1 PM)', 'Welcome drink'],
-    },
-    {
-      'name': 'Gold',
-      'minPoints': 2000,
-      'color': Colors.amber,
-      'benefits': [
-        '10% off dining',
-        'Late checkout (3 PM)',
-        'Room upgrade',
-        'Spa discount',
-      ],
-    },
-    {
-      'name': 'Platinum',
-      'minPoints': 5000,
-      'color': Colors.blueGrey,
-      'benefits': [
-        '15% off everything',
-        'Late checkout (6 PM)',
-        'Suite upgrade',
-        'Free spa treatment',
-        'Airport transfer',
-      ],
-    },
-  ];
+  List<Map<String, dynamic>> get _tiers {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'name': 'Silver',
+        'minPoints': 0,
+        'color': Colors.grey,
+        'benefits': ['5% off dining', 'Late checkout (1 PM)', 'Welcome drink'],
+      },
+      {
+        'name': 'Gold',
+        'minPoints': 2000,
+        'color': Colors.amber,
+        'benefits': [
+          l10n.tenOffDining,
+          l10n.lateCheckout,
+          l10n.roomUpgrade,
+          l10n.spaDiscount,
+        ],
+      },
+      {
+        'name': 'Platinum',
+        'minPoints': 5000,
+        'color': Colors.blueGrey,
+        'benefits': [
+          '15% off everything',
+          'Late checkout (6 PM)',
+          'Suite upgrade',
+          'Free spa treatment',
+          'Airport transfer',
+        ],
+      },
+    ];
+  }
 
   final List<Map<String, dynamic>> _rewards = [
     {
@@ -154,7 +158,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
       backgroundColor: AppColors.primary,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
-          'Energy Rewards',
+          AppLocalizations.of(context)!.loyaltyRewards,
           style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
         ),
         background: Container(
@@ -205,7 +209,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                       Icon(Icons.stars, color: Colors.white, size: 20),
                       const SizedBox(width: 4),
                       Text(
-                        '$_currentTier Member',
+                        AppLocalizations.of(context)!.goldMember,
                         style: AppTextStyles.titleMedium.copyWith(
                           color: Colors.white,
                         ),
@@ -214,7 +218,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Member since 2023',
+                    '${AppLocalizations.of(context)!.memberSince} 2023',
                     style: AppTextStyles.caption.copyWith(
                       color: Colors.white70,
                     ),
@@ -241,7 +245,7 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
           ),
           const SizedBox(height: AppSpacing.xl),
           Text(
-            'Available Points',
+            AppLocalizations.of(context)!.availablePoints,
             style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
           ),
           Text(
@@ -255,11 +259,17 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildStatItem('Nights', _nightsThisYear.toString()),
+              _buildStatItem(
+                AppLocalizations.of(context)!.nights,
+                _nightsThisYear.toString(),
+              ),
               Container(width: 1, height: 30, color: Colors.white24),
-              _buildStatItem('Tier', _currentTier),
+              _buildStatItem(AppLocalizations.of(context)!.tier, _currentTier),
               Container(width: 1, height: 30, color: Colors.white24),
-              _buildStatItem('To Next', Formatters.number(_pointsToNextTier)),
+              _buildStatItem(
+                AppLocalizations.of(context)!.toNext,
+                Formatters.number(_pointsToNextTier),
+              ),
             ],
           ),
         ],
@@ -290,7 +300,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Tier Progress', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.currentTier,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           Container(
             height: 8,
@@ -375,7 +388,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Your Benefits', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.yourBenefits,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Container(
             padding: AppSpacing.cardPadding,
@@ -419,7 +435,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Redeem Rewards', style: AppTextStyles.titleMedium),
+              Text(
+                AppLocalizations.of(context)!.availableRewards,
+                style: AppTextStyles.titleMedium,
+              ),
               TextButton(
                 onPressed: () {},
                 child: Text(
@@ -566,7 +585,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Redeem Reward?', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.redeemRewards,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(reward['name'] as String, style: AppTextStyles.titleMedium),
               Text(
@@ -581,13 +603,13 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: PrimaryButton(
-                      text: 'Confirm',
+                      text: AppLocalizations.of(context)!.confirm,
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -613,7 +635,10 @@ class _LoyaltyScreenState extends State<LoyaltyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Points History', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.pointsHistory,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           ..._history.map((item) {
             final isEarned = (item['points'] as int) > 0;

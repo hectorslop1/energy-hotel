@@ -36,7 +36,11 @@ class _ServiceCardState extends State<ServiceCard> {
       child: AnimatedContainer(
         duration: AppDurations.fast,
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isPressed ? 0.98 : 1.0),
+        transform: Matrix4.diagonal3Values(
+          _isPressed ? 0.98 : 1.0,
+          _isPressed ? 0.98 : 1.0,
+          1.0,
+        ),
         width: 200,
         decoration: BoxDecoration(
           color: AppColors.surface,

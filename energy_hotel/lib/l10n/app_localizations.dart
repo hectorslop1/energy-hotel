@@ -457,6 +457,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Authentication failed'**
   String get biometricFailed;
+
+  /// No description provided for @biometricAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Login'**
+  String get biometricAuth;
+
+  /// No description provided for @enableBiometricTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Biometric Login'**
+  String get enableBiometricTitle;
+
+  /// No description provided for @enableBiometricMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to enable biometric login? This will allow you to sign in faster and more securely using Face ID or Fingerprint.'**
+  String get enableBiometricMessage;
+
+  /// No description provided for @biometricEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric login enabled successfully'**
+  String get biometricEnabled;
+
+  /// No description provided for @biometricDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric login disabled'**
+  String get biometricDisabled;
+
+  /// No description provided for @loginWithFaceId.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In with Face ID'**
+  String get loginWithFaceId;
+
+  /// No description provided for @loginWithFingerprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In with Fingerprint'**
+  String get loginWithFingerprint;
+
+  /// No description provided for @biometricNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication is not available on this device'**
+  String get biometricNotAvailable;
+
+  /// No description provided for @enable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get enable;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get notNow;
 }
 
 class _AppLocalizationsDelegate

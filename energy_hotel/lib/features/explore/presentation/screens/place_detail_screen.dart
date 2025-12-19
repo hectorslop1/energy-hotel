@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -52,18 +53,19 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
     super.dispose();
   }
 
-  String _getCategoryLabel(PlaceCategory category) {
+  String _getCategoryName(PlaceCategory category) {
+    final l10n = AppLocalizations.of(context)!;
     switch (category) {
       case PlaceCategory.restaurants:
-        return 'Restaurant';
+        return l10n.restaurant;
       case PlaceCategory.activities:
-        return 'Activity';
+        return l10n.activities;
       case PlaceCategory.attractions:
-        return 'Attraction';
+        return l10n.attraction;
       case PlaceCategory.shopping:
-        return 'Shopping';
+        return l10n.shopping;
       case PlaceCategory.nightlife:
-        return 'Nightlife';
+        return l10n.nightlife;
     }
   }
 
@@ -149,8 +151,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
             icon: const Icon(Icons.share_outlined, color: AppColors.primary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Share link copied!'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.shareLinkCopied),
                   duration: Duration(seconds: 1),
                 ),
               );
@@ -173,8 +175,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
             icon: const Icon(Icons.favorite_border, color: AppColors.primary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Added to favorites'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.addedToFavorites),
                   duration: Duration(seconds: 1),
                 ),
               );
@@ -213,7 +215,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
           const SizedBox(height: AppSpacing.sm),
           _buildRatingRow(),
           const SizedBox(height: AppSpacing.lg),
-          Text('About', style: AppTextStyles.headlineSmall),
+          Text(
+            AppLocalizations.of(context)!.about,
+            style: AppTextStyles.headlineSmall,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             widget.place.description,
@@ -254,7 +259,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
           ),
           const SizedBox(width: AppSpacing.xs),
           Text(
-            _getCategoryLabel(widget.place.category).toUpperCase(),
+            _getCategoryName(widget.place.category).toUpperCase(),
             style: AppTextStyles.labelSmall.copyWith(
               color: AppColors.accent,
               fontWeight: FontWeight.bold,
@@ -311,7 +316,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
             children: [
               const Icon(Icons.location_on, color: AppColors.primary),
               const SizedBox(width: AppSpacing.sm),
-              Text('Location', style: AppTextStyles.titleMedium),
+              Text(
+                AppLocalizations.of(context)!.location,
+                style: AppTextStyles.titleMedium,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -337,7 +345,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
                     color: AppColors.textSecondary,
                   ),
                   const SizedBox(height: AppSpacing.xs),
-                  Text('View on Map', style: AppTextStyles.labelMedium),
+                  Text(
+                    AppLocalizations.of(context)!.viewOnMap,
+                    style: AppTextStyles.labelMedium,
+                  ),
                 ],
               ),
             ),
@@ -353,7 +364,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Highlights', style: AppTextStyles.headlineSmall),
+        Text(
+          AppLocalizations.of(context)!.highlights,
+          style: AppTextStyles.headlineSmall,
+        ),
         const SizedBox(height: AppSpacing.md),
         Wrap(
           spacing: AppSpacing.sm,
@@ -441,7 +455,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Reviews', style: AppTextStyles.headlineSmall),
+            Text(
+              AppLocalizations.of(context)!.reviews,
+              style: AppTextStyles.headlineSmall,
+            ),
             TextButton(
               onPressed: () {},
               child: Text(
@@ -549,7 +566,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Starting from', style: AppTextStyles.labelMedium),
+                Text(
+                  AppLocalizations.of(context)!.startingFrom,
+                  style: AppTextStyles.labelMedium,
+                ),
                 if (widget.place.price != null)
                   Text(
                     Formatters.currency(widget.place.price!),
@@ -559,7 +579,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
                   )
                 else
                   Text(
-                    'Free Entry',
+                    AppLocalizations.of(context)!.freeEntry,
                     style: AppTextStyles.headlineMedium.copyWith(
                       color: AppColors.success,
                     ),
@@ -583,15 +603,15 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen>
   String _getButtonText() {
     switch (widget.place.category) {
       case PlaceCategory.restaurants:
-        return 'Reserve Table';
+        return AppLocalizations.of(context)!.reserveTable;
       case PlaceCategory.activities:
-        return 'Book Activity';
+        return AppLocalizations.of(context)!.bookActivity;
       case PlaceCategory.attractions:
-        return 'Get Tickets';
+        return AppLocalizations.of(context)!.getTickets;
       case PlaceCategory.shopping:
-        return 'View Deals';
+        return AppLocalizations.of(context)!.viewDetails;
       case PlaceCategory.nightlife:
-        return 'Reserve';
+        return AppLocalizations.of(context)!.reserve;
     }
   }
 

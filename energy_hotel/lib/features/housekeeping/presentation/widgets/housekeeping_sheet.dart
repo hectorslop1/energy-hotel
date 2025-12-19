@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -21,59 +22,61 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
   bool _doNotDisturb = false;
   bool _isProcessing = false;
 
-  final List<Map<String, dynamic>> _cleaningServices = [
-    {
-      'id': 'full_clean',
-      'name': 'Full Room Cleaning',
-      'description':
-          'Complete cleaning including bed making, vacuuming, and bathroom',
-      'icon': Icons.cleaning_services,
-      'duration': '30-45 min',
-    },
-    {
-      'id': 'quick_tidy',
-      'name': 'Quick Tidy Up',
-      'description': 'Light cleaning, trash removal, and bed making',
-      'icon': Icons.auto_fix_high,
-      'duration': '15-20 min',
-    },
-    {
-      'id': 'turndown',
-      'name': 'Turndown Service',
-      'description': 'Evening bed preparation with chocolates',
-      'icon': Icons.nights_stay,
-      'duration': '10 min',
-    },
-    {
-      'id': 'deep_clean',
-      'name': 'Deep Cleaning',
-      'description': 'Thorough sanitization and detailed cleaning',
-      'icon': Icons.sanitizer,
-      'duration': '60 min',
-    },
-  ];
+  List<Map<String, dynamic>> get _cleaningServices {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'id': 'full_clean',
+        'name': l10n.fullRoomCleaning,
+        'description': l10n.fullRoomCleaningDesc,
+        'icon': Icons.cleaning_services,
+        'duration': '~30-45 min',
+      },
+      {
+        'id': 'quick_tidy',
+        'name': l10n.quickTidyUp,
+        'description': l10n.quickTidyUpDesc,
+        'icon': Icons.auto_fix_high,
+        'duration': '~15-20 min',
+      },
+      {
+        'id': 'turndown',
+        'name': l10n.turndownService,
+        'description': l10n.turndownServiceDesc,
+        'icon': Icons.nights_stay,
+        'duration': '~10 min',
+      },
+    ];
+  }
 
-  final List<Map<String, dynamic>> _amenities = [
-    {'id': 'towels', 'name': 'Extra Towels', 'icon': Icons.dry_cleaning},
-    {'id': 'pillows', 'name': 'Extra Pillows', 'icon': Icons.airline_seat_flat},
-    {'id': 'blanket', 'name': 'Extra Blanket', 'icon': Icons.bed},
-    {'id': 'toiletries', 'name': 'Toiletries Kit', 'icon': Icons.soap},
-    {'id': 'bathrobe', 'name': 'Bathrobe', 'icon': Icons.checkroom},
-    {'id': 'slippers', 'name': 'Slippers', 'icon': Icons.do_not_step},
-    {'id': 'iron', 'name': 'Iron & Board', 'icon': Icons.iron},
-    {'id': 'hangers', 'name': 'Extra Hangers', 'icon': Icons.dry},
-    {'id': 'coffee', 'name': 'Coffee/Tea Refill', 'icon': Icons.coffee},
-    {'id': 'water', 'name': 'Bottled Water', 'icon': Icons.water_drop},
-    {'id': 'minibar', 'name': 'Minibar Refill', 'icon': Icons.liquor},
-    {'id': 'ice', 'name': 'Ice Bucket', 'icon': Icons.ac_unit},
-  ];
+  List<Map<String, dynamic>> get _amenities {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {'id': 'towels', 'name': l10n.extraTowels, 'icon': Icons.dry_cleaning},
+      {
+        'id': 'pillows',
+        'name': l10n.extraPillows,
+        'icon': Icons.airline_seat_flat,
+      },
+      {'id': 'blanket', 'name': l10n.extraBlanket, 'icon': Icons.bed},
+      {'id': 'toiletries', 'name': l10n.toiletriesKit, 'icon': Icons.soap},
+      {'id': 'bathrobe', 'name': l10n.bathrobe, 'icon': Icons.checkroom},
+      {'id': 'slippers', 'name': l10n.slippers, 'icon': Icons.do_not_step},
+      {'id': 'iron', 'name': l10n.ironAndBoard, 'icon': Icons.iron},
+      {'id': 'hangers', 'name': l10n.extraHangers, 'icon': Icons.dry},
+      {'id': 'coffee', 'name': l10n.coffeeTeaRefill, 'icon': Icons.coffee},
+    ];
+  }
 
-  final List<Map<String, dynamic>> _timeSlots = [
-    {'id': 'anytime', 'name': 'Anytime', 'subtitle': 'First available'},
-    {'id': 'morning', 'name': 'Morning', 'subtitle': '8 AM - 12 PM'},
-    {'id': 'afternoon', 'name': 'Afternoon', 'subtitle': '12 PM - 5 PM'},
-    {'id': 'evening', 'name': 'Evening', 'subtitle': '5 PM - 9 PM'},
-  ];
+  List<Map<String, dynamic>> get _timeSlots {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {'id': 'anytime', 'name': l10n.anytime, 'subtitle': l10n.firstAvailable},
+      {'id': 'morning', 'name': l10n.morning, 'subtitle': '8 AM - 12 PM'},
+      {'id': 'afternoon', 'name': l10n.afternoon, 'subtitle': '12 PM - 5 PM'},
+      {'id': 'evening', 'name': l10n.evening, 'subtitle': '5 PM - 9 PM'},
+    ];
+  }
 
   Future<void> _submitRequest() async {
     if (_selectedServices.isEmpty && _selectedAmenities.isEmpty) return;
@@ -113,7 +116,10 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Request Submitted!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.requestSubmitted,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Our housekeeping team will attend to your request shortly.',
@@ -195,7 +201,7 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -272,9 +278,12 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Housekeeping', style: AppTextStyles.headlineMedium),
                     Text(
-                      'Request services & amenities',
+                      AppLocalizations.of(context)!.housekeeping,
+                      style: AppTextStyles.headlineMedium,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.requestServicesAmenities,
                       style: AppTextStyles.bodySmall,
                     ),
                   ],
@@ -296,9 +305,17 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
       ),
       child: Row(
         children: [
-          _buildTab(0, 'Cleaning', Icons.cleaning_services),
-          _buildTab(1, 'Amenities', Icons.inventory_2),
-          _buildTab(2, 'Schedule', Icons.schedule),
+          _buildTab(
+            0,
+            AppLocalizations.of(context)!.cleaning,
+            Icons.cleaning_services,
+          ),
+          _buildTab(
+            1,
+            AppLocalizations.of(context)!.amenities,
+            Icons.inventory_2,
+          ),
+          _buildTab(2, AppLocalizations.of(context)!.schedule, Icons.schedule),
         ],
       ),
     );
@@ -368,9 +385,12 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Do Not Disturb', style: AppTextStyles.titleSmall),
                     Text(
-                      'Housekeeping will not enter your room',
+                      AppLocalizations.of(context)!.doNotDisturb,
+                      style: AppTextStyles.titleSmall,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.housekeepingWillNotEnter,
                       style: AppTextStyles.caption,
                     ),
                   ],
@@ -379,13 +399,16 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
               Switch(
                 value: _doNotDisturb,
                 onChanged: (value) => setState(() => _doNotDisturb = value),
-                activeColor: AppColors.error,
+                activeThumbColor: AppColors.error,
               ),
             ],
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
-        Text('Cleaning Services', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.cleaningServices,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         ..._cleaningServices.map((service) => _buildServiceCard(service)),
       ],
@@ -566,7 +589,10 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
       key: const ValueKey('schedule'),
       padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
-        Text('Preferred Time', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.preferredTime,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         ..._timeSlots.map((slot) {
           final isSelected = _preferredTime == slot['id'];
@@ -640,7 +666,7 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
-                  'Requests are typically fulfilled within 30 minutes during selected time window.',
+                  AppLocalizations.of(context)!.requestsFulfilledInfo,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.info,
                   ),
@@ -694,12 +720,12 @@ class _HousekeepingSheetState extends ConsumerState<HousekeepingSheet> {
             ),
           PrimaryButton(
             text: _isProcessing
-                ? 'Submitting...'
+                ? AppLocalizations.of(context)!.submitting
                 : _doNotDisturb
-                ? 'Set Do Not Disturb'
+                ? AppLocalizations.of(context)!.doNotDisturb
                 : hasSelection
-                ? 'Submit Request'
-                : 'Select Services or Amenities',
+                ? AppLocalizations.of(context)!.submitRequest
+                : AppLocalizations.of(context)!.selectServicesOrAmenities,
             isLoading: _isProcessing,
             onPressed: (_doNotDisturb || hasSelection) && !_isProcessing
                 ? _submitRequest

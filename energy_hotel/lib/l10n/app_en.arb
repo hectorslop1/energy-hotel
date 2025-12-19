@@ -66,5 +66,15 @@
   "invalidPassword": "Password must be at least 6 characters",
   "loginFailed": "Login failed. Please try again.",
   "biometricPrompt": "Authenticate to continue",
-  "biometricFailed": "Authentication failed"
+  "biometricFailed": "Authentication failed",
+  "biometricAuth": "Biometric Login",
+  "enableBiometricTitle": "Enable Biometric Login",
+  "enableBiometricMessage": "Would you like to enable biometric login? This will allow you to sign in faster and more securely using Face ID or Fingerprint.",
+  "biometricEnabled": "Biometric login enabled successfully",
+  "biometricDisabled": "Biometric login disabled",
+  "loginWithFaceId": "Log In with Face ID",
+  "loginWithFingerprint": "Log In with Fingerprint",
+  "biometricNotAvailable": "Biometric authentication is not available on this device",
+  "enable": "Enable",
+  "notNow": "Not Now"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -24,7 +25,8 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
   String? _selectedTherapist;
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
   String _selectedTime = '10:00 AM';
-  String _specialRequests = '';
+  final TextEditingController _specialRequestsController =
+      TextEditingController();
   bool _isProcessing = false;
 
   final List<Map<String, dynamic>> _categories = [
@@ -297,12 +299,12 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'Spa Appointment Booked!',
+                AppLocalizations.of(context)!.spaBooked,
                 style: AppTextStyles.headlineMedium,
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Relax and prepare for your treatment.',
+                AppLocalizations.of(context)!.relaxPrepare,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -340,7 +342,7 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -426,7 +428,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Spa & Wellness', style: AppTextStyles.headlineMedium),
+                    Text(
+                      AppLocalizations.of(context)!.spaWellness,
+                      style: AppTextStyles.headlineMedium,
+                    ),
                     Text(_getStepTitle(), style: AppTextStyles.bodySmall),
                   ],
                 ),
@@ -439,15 +444,16 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
   }
 
   String _getStepTitle() {
+    final l10n = AppLocalizations.of(context)!;
     switch (_currentStep) {
       case 0:
-        return 'Select treatment category';
+        return l10n.selectTreatmentCategory;
       case 1:
-        return 'Choose your treatment';
+        return l10n.chooseYourTreatment;
       case 2:
-        return 'Add enhancements';
+        return l10n.addEnhancements;
       case 3:
-        return 'Select date & time';
+        return l10n.selectDateTime;
       default:
         return '';
     }
@@ -676,10 +682,13 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Enhance Your Experience', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.enhanceExperience,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.xs),
           Text(
-            'Add extra treatments to your session',
+            AppLocalizations.of(context)!.addExtraTreatments,
             style: AppTextStyles.bodySmall,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -752,7 +761,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
             );
           }),
           const SizedBox(height: AppSpacing.lg),
-          Text('Therapist Preference', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.therapistPreference,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           ..._therapists.map((therapist) {
             final isSelected = _selectedTherapist == therapist['id'];
@@ -820,12 +832,15 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
             );
           }),
           const SizedBox(height: AppSpacing.lg),
-          Text('Special Requests', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.specialRequests,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.sm),
           TextField(
             maxLines: 3,
             decoration: InputDecoration(
-              hintText: 'Any allergies, preferences, or special needs...',
+              hintText: AppLocalizations.of(context)!.anyAllergies,
               hintStyle: AppTextStyles.bodySmall,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.borderRadius),
@@ -840,7 +855,7 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
                 borderSide: const BorderSide(color: AppColors.primary),
               ),
             ),
-            onChanged: (value) => _specialRequests = value,
+            controller: _specialRequestsController,
           ),
         ],
       ),
@@ -854,7 +869,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Select Date', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.selectDate,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: 80,
@@ -919,7 +937,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('Select Time', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.selectTime,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.sm,
@@ -970,7 +991,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Booking Summary', style: AppTextStyles.titleMedium),
+          Text(
+            AppLocalizations.of(context)!.bookingSummary,
+            style: AppTextStyles.titleMedium,
+          ),
           const SizedBox(height: AppSpacing.md),
           _buildSummaryRow(
             _selectedTreatment!['name'] as String,
@@ -987,7 +1011,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total', style: AppTextStyles.titleMedium),
+              Text(
+                AppLocalizations.of(context)!.total,
+                style: AppTextStyles.titleMedium,
+              ),
               Text(
                 Formatters.currency(_totalPrice),
                 style: AppTextStyles.headlineSmall.copyWith(
@@ -1041,7 +1068,10 @@ class _SpaBookingSheetState extends ConsumerState<SpaBookingSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Total', style: AppTextStyles.caption),
+                  Text(
+                    AppLocalizations.of(context)!.total,
+                    style: AppTextStyles.caption,
+                  ),
                   Text(
                     Formatters.currency(_totalPrice),
                     style: AppTextStyles.headlineSmall.copyWith(

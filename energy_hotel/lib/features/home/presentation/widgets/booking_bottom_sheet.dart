@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -106,7 +107,10 @@ class _BookingBottomSheetState extends ConsumerState<BookingBottomSheet> {
         children: [
           const Icon(Icons.check_circle, color: AppColors.success, size: 64),
           const SizedBox(height: AppSpacing.md),
-          Text('Booking Confirmed!', style: AppTextStyles.headlineMedium),
+          Text(
+            AppLocalizations.of(context)!.bookingConfirmed,
+            style: AppTextStyles.headlineMedium,
+          ),
         ],
       ),
     );
@@ -149,7 +153,9 @@ class _BookingBottomSheetState extends ConsumerState<BookingBottomSheet> {
           const SizedBox(height: AppSpacing.lg),
 
           PrimaryButton(
-            text: _isProcessing ? 'Processing...' : 'Confirm Booking',
+            text: _isProcessing
+                ? AppLocalizations.of(context)!.processing
+                : AppLocalizations.of(context)!.confirmBooking,
             isLoading: _isProcessing,
             onPressed: _isProcessing ? null : _processBooking,
           ),
@@ -163,7 +169,10 @@ class _BookingBottomSheetState extends ConsumerState<BookingBottomSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Select Date', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.selectDate,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         GestureDetector(
           onTap: () async {
@@ -218,7 +227,10 @@ class _BookingBottomSheetState extends ConsumerState<BookingBottomSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Select Time', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.selectTime,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Wrap(
           spacing: AppSpacing.sm,
@@ -258,7 +270,10 @@ class _BookingBottomSheetState extends ConsumerState<BookingBottomSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Number of Guests', style: AppTextStyles.titleMedium),
+        Text(
+          AppLocalizations.of(context)!.guests,
+          style: AppTextStyles.titleMedium,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Container(
           padding: const EdgeInsets.symmetric(
@@ -380,7 +395,10 @@ class _SuccessDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Booking Confirmed!', style: AppTextStyles.headlineMedium),
+            Text(
+              AppLocalizations.of(context)!.bookingConfirmed,
+              style: AppTextStyles.headlineMedium,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Your reservation has been successfully made.',
@@ -413,7 +431,7 @@ class _SuccessDialog extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: PrimaryButton(
-                text: 'Done',
+                text: AppLocalizations.of(context)!.done,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

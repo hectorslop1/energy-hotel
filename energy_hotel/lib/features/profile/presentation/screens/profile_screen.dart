@@ -20,6 +20,7 @@ import '../../../transport/presentation/widgets/transport_sheet.dart';
 import '../../../feedback/presentation/widgets/feedback_sheet.dart';
 import '../../../settings/presentation/providers/language_provider.dart';
 import '../../../settings/presentation/widgets/language_selector_sheet.dart';
+import '../../../auth/presentation/providers/biometric_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -268,7 +269,7 @@ class ProfileScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Text(
-                  'Upcoming',
+                  AppLocalizations.of(context)!.upcoming,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -284,7 +285,7 @@ class ProfileScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Text(
-                  'Past',
+                  AppLocalizations.of(context)!.past,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -313,18 +314,16 @@ class ProfileScreen extends ConsumerWidget {
             color: AppColors.textTertiary,
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            'No reservations yet',
-            style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.textSecondary,
+          Builder(
+            builder: (context) => Text(
+              AppLocalizations.of(context)!.noReservations,
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(
-            'Your bookings will appear here',
-            style: AppTextStyles.bodySmall,
-            textAlign: TextAlign.center,
-          ),
+          Text('', style: AppTextStyles.bodySmall, textAlign: TextAlign.center),
         ],
       ),
     );
@@ -461,14 +460,14 @@ class ProfileScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cancel Reservation'),
+        title: Text(AppLocalizations.of(context)!.cancelReservation),
         content: Text(
           'Are you sure you want to cancel your reservation at ${reservation.name}?',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Keep'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -477,14 +476,16 @@ class ProfileScreen extends ConsumerWidget {
                   .cancelReservation(reservation.id);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Reservation cancelled'),
+                SnackBar(
+                  content: Text(
+                    AppLocalizations.of(context)!.reservationCancelled,
+                  ),
                   duration: Duration(seconds: 2),
                 ),
               );
             },
             child: Text(
-              'Cancel Reservation',
+              AppLocalizations.of(context)!.cancelReservation,
               style: TextStyle(color: AppColors.error),
             ),
           ),
@@ -574,16 +575,7 @@ class ProfileScreen extends ConsumerWidget {
             },
           ),
           const Divider(height: 1),
-          _buildSettingsTile(
-            icon: Icons.fingerprint,
-            title: l10n.biometricAuth,
-            subtitle: 'Face ID / Fingerprint',
-            trailing: Switch(
-              value: false,
-              onChanged: (value) {},
-              activeThumbColor: AppColors.primary,
-            ),
-          ),
+          _buildBiometricTile(context, ref, l10n),
           const Divider(height: 1),
           _buildSettingsTile(
             icon: Icons.credit_card_outlined,
@@ -668,5 +660,189 @@ class ProfileScreen extends ConsumerWidget {
               : null),
       onTap: onTap,
     );
+  }
+
+  Widget _buildBiometricTile(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) {
+    final biometricState = ref.watch(biometricEnabledProvider);
+    final authState = ref.watch(authProvider);
+
+    if (!biometricState.isAvailable) {
+      return _buildSettingsTile(
+        icon: Icons.fingerprint,
+        title: l10n.biometricAuth,
+        subtitle: l10n.biometricNotAvailable,
+        trailing: Switch(
+          value: false,
+          onChanged: null,
+          activeThumbColor: AppColors.primary,
+        ),
+      );
+    }
+
+    return _buildSettingsTile(
+      icon: biometricState.isFaceId ? Icons.face : Icons.fingerprint,
+      title: l10n.biometricAuth,
+      subtitle: biometricState.isEnabled
+          ? (biometricState.isFaceId ? 'Face ID' : 'Fingerprint')
+          : l10n.enableBiometrics,
+      trailing: biometricState.isLoading
+          ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Switch(
+              value: biometricState.isEnabled,
+              onChanged: (value) async {
+                if (value) {
+                  _showEnableBiometricDialog(
+                    context,
+                    ref,
+                    l10n,
+                    authState.user?.email ?? '',
+                  );
+                } else {
+                  await ref
+                      .read(biometricEnabledProvider.notifier)
+                      .disableBiometric();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.biometricDisabled),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                }
+              },
+              activeThumbColor: AppColors.primary,
+            ),
+    );
+  }
+
+  void _showEnableBiometricDialog(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    String email,
+  ) {
+    final biometricState = ref.read(biometricEnabledProvider);
+    final iconData = biometricState.isFaceId ? Icons.face : Icons.fingerprint;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(iconData, color: AppColors.primary, size: 28),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                l10n.enableBiometricTitle,
+                style: AppTextStyles.titleLarge,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          l10n.enableBiometricMessage,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.notNow),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              await _enableBiometric(context, ref, l10n, email);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(l10n.enable),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _enableBiometric(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    String email,
+  ) async {
+    final passwordController = TextEditingController();
+
+    final password = await showDialog<String>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.password),
+        content: TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: l10n.password,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () =>
+                Navigator.pop(dialogContext, passwordController.text),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.confirm),
+          ),
+        ],
+      ),
+    );
+
+    if (password != null && password.isNotEmpty && context.mounted) {
+      final success = await ref
+          .read(biometricEnabledProvider.notifier)
+          .enableBiometric(
+            email: email,
+            password: password,
+            localizedReason: l10n.biometricPrompt,
+          );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              success ? l10n.biometricEnabled : l10n.biometricFailed,
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 }

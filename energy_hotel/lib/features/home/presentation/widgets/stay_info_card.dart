@@ -152,10 +152,10 @@ class StayInfoCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       daysRemaining == 0
-                          ? 'Check-out today in $hoursRemaining hours'
+                          ? '${AppLocalizations.of(context)!.checkOut} today in $hoursRemaining ${AppLocalizations.of(context)!.hours}'
                           : daysRemaining == 1
-                          ? 'Check-out tomorrow'
-                          : '$daysRemaining days remaining',
+                          ? '${AppLocalizations.of(context)!.checkOut} tomorrow'
+                          : '$daysRemaining ${AppLocalizations.of(context)!.daysRemaining}',
                       style: AppTextStyles.bodySmall.copyWith(
                         color: Colors.white,
                       ),
@@ -289,10 +289,13 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Stay Extended!', style: AppTextStyles.headlineMedium),
+              Text(
+                AppLocalizations.of(context)!.stayExtended,
+                style: AppTextStyles.headlineMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Your stay has been extended successfully.',
+                AppLocalizations.of(context)!.stayExtended,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -347,7 +350,7 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  text: 'Done',
+                  text: AppLocalizations.of(context)!.done,
                   onPressed: () {
                     Navigator.of(context).pop();
                     widget.onConfirm?.call();
@@ -400,7 +403,10 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
-                Text('Extend Your Stay', style: AppTextStyles.headlineMedium),
+                Text(
+                  AppLocalizations.of(context)!.extendStay,
+                  style: AppTextStyles.headlineMedium,
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -434,7 +440,10 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('New check-out', style: AppTextStyles.bodyMedium),
+                      Text(
+                        AppLocalizations.of(context)!.newCheckoutDate,
+                        style: AppTextStyles.bodyMedium,
+                      ),
                       Text(
                         Formatters.date(_newCheckOut, format: 'MMM dd, yyyy'),
                         style: AppTextStyles.titleMedium.copyWith(
@@ -447,7 +456,10 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Additional Nights', style: AppTextStyles.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.additionalNights,
+              style: AppTextStyles.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.md),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -483,7 +495,7 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
               ],
             ),
             Text(
-              '${Formatters.currency(widget.pricePerNight)} per night',
+              '${Formatters.currency(widget.pricePerNight)} ${AppLocalizations.of(context)!.perNight}',
               style: AppTextStyles.bodySmall,
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -499,7 +511,10 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total', style: AppTextStyles.titleMedium),
+                  Text(
+                    AppLocalizations.of(context)!.total,
+                    style: AppTextStyles.titleMedium,
+                  ),
                   Text(
                     Formatters.currency(_totalPrice),
                     style: AppTextStyles.headlineMedium.copyWith(
@@ -511,7 +526,9 @@ class _ExtendStaySheetState extends State<ExtendStaySheet> {
             ),
             const SizedBox(height: AppSpacing.lg),
             PrimaryButton(
-              text: _isProcessing ? 'Processing...' : 'Confirm Extension',
+              text: _isProcessing
+                  ? AppLocalizations.of(context)!.loading
+                  : AppLocalizations.of(context)!.confirmExtension,
               isLoading: _isProcessing,
               onPressed: _isProcessing ? null : _processExtension,
             ),

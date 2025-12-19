@@ -383,8 +383,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   );
                 },
               ),
-              error: (error, stack) =>
-                  Center(child: Text('Error loading promotions')),
+              error: (error, stack) => Center(
+                child: Text(
+                  AppLocalizations.of(context)!.errorLoadingPromotions,
+                ),
+              ),
             ),
           ),
         ],
@@ -456,8 +459,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   );
                 },
               ),
-              error: (error, stack) =>
-                  Center(child: Text('Error loading services')),
+              error: (error, stack) => Center(
+                child: Text(AppLocalizations.of(context)!.errorLoadingServices),
+              ),
             ),
           ),
         ],

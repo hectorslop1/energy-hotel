@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
@@ -14,50 +15,53 @@ class HotelInfoScreen extends StatefulWidget {
 class _HotelInfoScreenState extends State<HotelInfoScreen> {
   int _selectedTab = 0;
 
-  final List<Map<String, dynamic>> _amenities = [
-    {
-      'name': 'Swimming Pool',
-      'hours': '7:00 AM - 10:00 PM',
-      'location': 'Ground Floor',
-      'icon': Icons.pool,
-      'notes': 'Towels available at pool deck',
-    },
-    {
-      'name': 'Fitness Center',
-      'hours': '24 Hours',
-      'location': '2nd Floor',
-      'icon': Icons.fitness_center,
-      'notes': 'Room key required for access',
-    },
-    {
-      'name': 'Spa & Wellness',
-      'hours': '9:00 AM - 9:00 PM',
-      'location': '3rd Floor',
-      'icon': Icons.spa,
-      'notes': 'Reservations recommended',
-    },
-    {
-      'name': 'Business Center',
-      'hours': '24 Hours',
-      'location': 'Lobby Level',
-      'icon': Icons.computer,
-      'notes': 'Printing services available',
-    },
-    {
-      'name': 'Kids Club',
-      'hours': '9:00 AM - 6:00 PM',
-      'location': 'Ground Floor',
-      'icon': Icons.child_care,
-      'notes': 'Ages 4-12, supervision included',
-    },
-    {
-      'name': 'Gift Shop',
-      'hours': '8:00 AM - 10:00 PM',
-      'location': 'Lobby',
-      'icon': Icons.shopping_bag,
-      'notes': 'Souvenirs, essentials, snacks',
-    },
-  ];
+  List<Map<String, dynamic>> get _amenities {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'name': l10n.swimmingPool,
+        'hours': '7:00 AM - 10:00 PM',
+        'location': l10n.groundFloor,
+        'icon': Icons.pool,
+        'notes': l10n.towelsAvailableAtPoolDeck,
+      },
+      {
+        'name': l10n.fitnessCenter,
+        'hours': l10n.twentyFourHours,
+        'location': l10n.secondFloor,
+        'icon': Icons.fitness_center,
+        'notes': l10n.roomKeyRequiredForAccess,
+      },
+      {
+        'name': l10n.spaWellness,
+        'hours': '9:00 AM - 9:00 PM',
+        'location': l10n.thirdFloor,
+        'icon': Icons.spa,
+        'notes': l10n.reservationsRecommended,
+      },
+      {
+        'name': l10n.businessCenter,
+        'hours': l10n.twentyFourHours,
+        'location': l10n.lobbyLevel,
+        'icon': Icons.computer,
+        'notes': l10n.printingServicesAvailable,
+      },
+      {
+        'name': l10n.kidsClub,
+        'hours': '9:00 AM - 6:00 PM',
+        'location': l10n.groundFloor,
+        'icon': Icons.child_care,
+        'notes': l10n.agesSupervisionIncluded,
+      },
+      {
+        'name': l10n.giftShop,
+        'hours': '8:00 AM - 10:00 PM',
+        'location': 'Lobby',
+        'icon': Icons.shopping_bag,
+        'notes': 'Souvenirs, essentials, snacks',
+      },
+    ];
+  }
 
   final List<Map<String, dynamic>> _restaurants = [
     {
@@ -97,23 +101,30 @@ class _HotelInfoScreenState extends State<HotelInfoScreen> {
     },
   ];
 
-  final List<Map<String, dynamic>> _contacts = [
-    {'name': 'Front Desk', 'number': '0', 'icon': Icons.desk},
-    {'name': 'Room Service', 'number': '1', 'icon': Icons.room_service},
-    {'name': 'Housekeeping', 'number': '2', 'icon': Icons.cleaning_services},
-    {'name': 'Concierge', 'number': '3', 'icon': Icons.support_agent},
-    {'name': 'Spa', 'number': '4', 'icon': Icons.spa},
-    {'name': 'Valet', 'number': '5', 'icon': Icons.car_rental},
-    {'name': 'Emergency', 'number': '911', 'icon': Icons.emergency},
-    {'name': 'Security', 'number': '6', 'icon': Icons.security},
-  ];
+  List<Map<String, dynamic>> get _contacts {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {'name': l10n.frontDesk, 'number': '0', 'icon': Icons.desk},
+      {'name': l10n.roomService, 'number': '1', 'icon': Icons.room_service},
+      {
+        'name': l10n.housekeeping,
+        'number': '2',
+        'icon': Icons.cleaning_services,
+      },
+      {'name': l10n.concierge, 'number': '3', 'icon': Icons.support_agent},
+      {'name': l10n.spa, 'number': '4', 'icon': Icons.spa},
+      {'name': l10n.valet, 'number': '5', 'icon': Icons.car_rental},
+      {'name': l10n.emergency, 'number': '911', 'icon': Icons.emergency},
+      {'name': l10n.security, 'number': '6', 'icon': Icons.security},
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Hotel Information'),
+        title: Text(AppLocalizations.of(context)!.hotelInformation),
         backgroundColor: AppColors.background,
         elevation: 0,
       ),
@@ -137,7 +148,8 @@ class _HotelInfoScreenState extends State<HotelInfoScreen> {
   }
 
   Widget _buildTabs() {
-    final tabs = ['WiFi', 'Amenities', 'Dining', 'Contacts'];
+    final l10n = AppLocalizations.of(context)!;
+    final tabs = ['WiFi', l10n.amenities, l10n.dining, l10n.contacts];
     return Container(
       height: 50,
       margin: const EdgeInsets.all(AppSpacing.md),
@@ -230,7 +242,11 @@ class _HotelInfoScreenState extends State<HotelInfoScreen> {
                           const ClipboardData(text: 'Welcome2024!'),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password copied!')),
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(context)!.passwordCopied,
+                            ),
+                          ),
                         );
                       },
                       icon: const Icon(Icons.copy, color: Colors.white),
@@ -243,23 +259,23 @@ class _HotelInfoScreenState extends State<HotelInfoScreen> {
           const SizedBox(height: AppSpacing.lg),
           _buildInfoCard(
             icon: Icons.speed,
-            title: 'Connection Speed',
-            subtitle: 'Up to 100 Mbps download',
+            title: AppLocalizations.of(context)!.connectionSpeed,
+            subtitle: AppLocalizations.of(context)!.upTo100Mbps,
           ),
           _buildInfoCard(
             icon: Icons.devices,
-            title: 'Device Limit',
-            subtitle: '5 devices per room',
+            title: AppLocalizations.of(context)!.deviceLimit,
+            subtitle: AppLocalizations.of(context)!.devicesPerRoom,
           ),
           _buildInfoCard(
             icon: Icons.signal_wifi_4_bar,
-            title: 'Coverage',
-            subtitle: 'Available throughout the property',
+            title: AppLocalizations.of(context)!.coverage,
+            subtitle: AppLocalizations.of(context)!.availableThroughout,
           ),
           _buildInfoCard(
             icon: Icons.support,
-            title: 'Need Help?',
-            subtitle: 'Call IT Support: Dial 7',
+            title: AppLocalizations.of(context)!.needHelp,
+            subtitle: AppLocalizations.of(context)!.callItSupport,
           ),
         ],
       ),

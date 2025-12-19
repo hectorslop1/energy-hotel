@@ -51,7 +51,11 @@ class _AppCardState extends State<AppCard> {
     Widget card = AnimatedContainer(
       duration: AppDurations.fast,
       curve: Curves.easeOut,
-      transform: Matrix4.identity()..scale(_isPressed ? 0.98 : 1.0),
+      transform: Matrix4.diagonal3Values(
+        _isPressed ? 0.98 : 1.0,
+        _isPressed ? 0.98 : 1.0,
+        1.0,
+      ),
       width: widget.width,
       height: widget.height,
       decoration: BoxDecoration(

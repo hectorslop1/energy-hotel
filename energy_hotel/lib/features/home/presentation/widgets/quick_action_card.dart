@@ -35,7 +35,11 @@ class _QuickActionCardState extends State<QuickActionCard> {
       child: AnimatedContainer(
         duration: AppDurations.fast,
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isPressed ? 0.95 : 1.0),
+        transform: Matrix4.diagonal3Values(
+          _isPressed ? 0.95 : 1.0,
+          _isPressed ? 0.95 : 1.0,
+          1.0,
+        ),
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? AppColors.surfaceVariant,

@@ -66,5 +66,15 @@
   "invalidPassword": "La contraseña debe tener al menos 6 caracteres",
   "loginFailed": "Error al iniciar sesión. Intenta de nuevo.",
   "biometricPrompt": "Autentícate para continuar",
-  "biometricFailed": "Autenticación fallida"
+  "biometricFailed": "Autenticación fallida",
+  "biometricAuth": "Inicio de Sesión Biométrico",
+  "enableBiometricTitle": "Habilitar Inicio Biométrico",
+  "enableBiometricMessage": "¿Te gustaría habilitar el inicio de sesión biométrico? Esto te permitirá iniciar sesión más rápido y de forma más segura usando Face ID o Huella.",
+  "biometricEnabled": "Inicio biométrico habilitado exitosamente",
+  "biometricDisabled": "Inicio biométrico deshabilitado",
+  "loginWithFaceId": "Iniciar con Face ID",
+  "loginWithFingerprint": "Iniciar con Huella",
+  "biometricNotAvailable": "La autenticación biométrica no está disponible en este dispositivo",
+  "enable": "Habilitar",
+  "notNow": "Ahora No"
 }

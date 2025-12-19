@@ -29,7 +29,11 @@ class _PromotionCardState extends State<PromotionCard> {
       child: AnimatedContainer(
         duration: AppDurations.fast,
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isPressed ? 0.98 : 1.0),
+        transform: Matrix4.diagonal3Values(
+          _isPressed ? 0.98 : 1.0,
+          _isPressed ? 0.98 : 1.0,
+          1.0,
+        ),
         height: 180,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadiusLg),

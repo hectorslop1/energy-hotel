@@ -28,38 +28,40 @@ class EnergyHotelApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('es'),
-        Locale('fr'),
-        Locale('de'),
-        Locale('it'),
-        Locale('pt'),
-        Locale('zh'),
-        Locale('ja'),
-        Locale('ko'),
-        Locale('ar'),
-      ],
+      supportedLocales: const [Locale('en'), Locale('es')],
       home: const AuthWrapper(),
     );
   }
 }
 
-class AuthWrapper extends ConsumerWidget {
+class AuthWrapper extends ConsumerStatefulWidget {
   const AuthWrapper({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends ConsumerState<AuthWrapper> {
+  bool _hasShownSplash = false;
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
     switch (authState.status) {
       case AuthStatus.initial:
-      case AuthStatus.loading:
         return const SplashScreen();
+      case AuthStatus.loading:
+        if (!_hasShownSplash) {
+          return const SplashScreen();
+        }
+        return const LoginScreen();
       case AuthStatus.authenticated:
+        _hasShownSplash = true;
         return const MainNavigationScreen();
       case AuthStatus.unauthenticated:
       case AuthStatus.error:
+        _hasShownSplash = true;
         return const LoginScreen();
     }
   }

@@ -190,4 +190,36 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get biometricFailed => 'Autenticación fallida';
+
+  @override
+  String get biometricAuth => 'Inicio de Sesión Biométrico';
+
+  @override
+  String get enableBiometricTitle => 'Habilitar Inicio Biométrico';
+
+  @override
+  String get enableBiometricMessage =>
+      '¿Te gustaría habilitar el inicio de sesión biométrico? Esto te permitirá iniciar sesión más rápido y de forma más segura usando Face ID o Huella.';
+
+  @override
+  String get biometricEnabled => 'Inicio biométrico habilitado exitosamente';
+
+  @override
+  String get biometricDisabled => 'Inicio biométrico deshabilitado';
+
+  @override
+  String get loginWithFaceId => 'Iniciar con Face ID';
+
+  @override
+  String get loginWithFingerprint => 'Iniciar con Huella';
+
+  @override
+  String get biometricNotAvailable =>
+      'La autenticación biométrica no está disponible en este dispositivo';
+
+  @override
+  String get enable => 'Habilitar';
+
+  @override
+  String get notNow => 'Ahora No';
 }

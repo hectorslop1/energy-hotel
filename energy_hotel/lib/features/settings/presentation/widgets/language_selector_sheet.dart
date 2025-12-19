@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../providers/language_provider.dart';
@@ -56,7 +57,8 @@ class LanguageSelectorSheet extends ConsumerWidget {
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Text(
-                        'Select Language',
+                        AppLocalizations.of(context)?.selectLanguage ??
+                            'Select Language',
                         style: AppTextStyles.headlineMedium,
                       ),
                     ],
@@ -80,7 +82,9 @@ class LanguageSelectorSheet extends ConsumerWidget {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Language changed to ${language.name}'),
+                          content: Text(
+                            '${AppLocalizations.of(context)?.languageChangedTo ?? 'Language changed to'} ${language.name}',
+                          ),
                           duration: const Duration(seconds: 2),
                         ),
                       );

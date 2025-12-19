@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_durations.dart';
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
@@ -119,8 +120,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
             icon: const Icon(Icons.favorite_border, color: AppColors.primary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Added to favorites'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.addedToFavorites),
                   duration: Duration(seconds: 1),
                 ),
               );
@@ -159,7 +160,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
           const SizedBox(height: AppSpacing.sm),
           _buildRatingRow(),
           const SizedBox(height: AppSpacing.lg),
-          Text('About this service', style: AppTextStyles.headlineSmall),
+          Text(
+            AppLocalizations.of(context)!.about,
+            style: AppTextStyles.headlineSmall,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             widget.service.description,
@@ -205,11 +209,17 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
         const SizedBox(width: AppSpacing.xs),
         Text('4.8', style: AppTextStyles.titleMedium),
         const SizedBox(width: AppSpacing.xs),
-        Text('(124 reviews)', style: AppTextStyles.bodySmall),
+        Text(
+          '(124 ${AppLocalizations.of(context)!.reviews})',
+          style: AppTextStyles.bodySmall,
+        ),
         const Spacer(),
         Icon(Icons.access_time, color: AppColors.textSecondary, size: 16),
         const SizedBox(width: AppSpacing.xs),
-        Text('60 min', style: AppTextStyles.bodySmall),
+        Text(
+          '60 ${AppLocalizations.of(context)!.min}',
+          style: AppTextStyles.bodySmall,
+        ),
       ],
     );
   }
@@ -225,13 +235,21 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
         children: [
           _buildDetailRow(
             Icons.location_on_outlined,
-            'Location',
+            AppLocalizations.of(context)!.location,
             'Hotel Spa Center, Floor 2',
           ),
           const Divider(height: AppSpacing.lg),
-          _buildDetailRow(Icons.schedule_outlined, 'Duration', '60 minutes'),
+          _buildDetailRow(
+            Icons.schedule_outlined,
+            AppLocalizations.of(context)!.duration,
+            '60 minutes',
+          ),
           const Divider(height: AppSpacing.lg),
-          _buildDetailRow(Icons.people_outline, 'Capacity', 'Up to 2 guests'),
+          _buildDetailRow(
+            Icons.people_outline,
+            AppLocalizations.of(context)!.capacity,
+            AppLocalizations.of(context)!.upToGuests,
+          ),
         ],
       ),
     );
@@ -264,7 +282,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('What\'s included', style: AppTextStyles.headlineSmall),
+        Text(
+          AppLocalizations.of(context)!.highlights,
+          style: AppTextStyles.headlineSmall,
+        ),
         const SizedBox(height: AppSpacing.md),
         ...included.map(
           (item) => Padding(
@@ -306,7 +327,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Price', style: AppTextStyles.labelMedium),
+                Text(
+                  AppLocalizations.of(context)!.price,
+                  style: AppTextStyles.labelMedium,
+                ),
                 if (widget.service.price > 0)
                   Text(
                     Formatters.currency(widget.service.price),
@@ -316,7 +340,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
                   )
                 else
                   Text(
-                    'Complimentary',
+                    AppLocalizations.of(context)!.complimentary,
                     style: AppTextStyles.headlineMedium.copyWith(
                       color: AppColors.success,
                     ),
@@ -326,7 +350,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen>
             const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: PrimaryButton(
-                text: widget.service.price > 0 ? 'Book Now' : 'Reserve',
+                text: widget.service.price > 0
+                    ? AppLocalizations.of(context)!.bookNow
+                    : AppLocalizations.of(context)!.reserve,
                 icon: Icons.calendar_today_outlined,
                 onPressed: _showBookingSheet,
               ),
